@@ -10,17 +10,26 @@
 #
 
 import base64
-import sys
 import string
 my_base64chars =  "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 std_base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
-mode=sys.argv[1]
-hexhash=sys.argv[2]
 
-if mode=="c":
-    print base64.b64encode(base64.b16decode(hexhash,casefold=True)).translate(string.maketrans(std_base64chars,my_base64chars))
-elif mode=="x":
-    print base64.b16encode(base64.b64decode(hexhash.translate(string.maketrans(my_base64chars,std_base64chars))))
-else:
-    print "Possible modes:\n (x) crypt() to hex\n (c) hex() to crypt()"
+def hex2crypt(hexhash):
+    return base64.b64encode(base64.b16decode(hexhash,casefold=True)).translate(string.maketrans(std_base64chars,my_base64chars))
+
+def crypt2hex(hexhash):
+    return base64.b16encode(base64.b64decode(hexhash.translate(string.maketrans(my_base64chars,std_base64chars))))
+
+if __name__ == "__main__":
+    import sys
+
+    mode=sys.argv[1]
+    hexhash=sys.argv[2]
+
+    if mode == "c":
+        print hex2crypt(hexhash)
+    elif mode == "x":
+        print crypt2hex(hexhash)
+    else:
+        print "Possible modes:\n (x) crypt() to hex\n (c) hex() to crypt()"
