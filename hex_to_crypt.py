@@ -9,17 +9,17 @@
 #
 #
 
-import base64
-import string
+from base64 import b64encode, b16decode
+from string import maketrans
 my_base64chars =  "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 std_base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
 
 def hex2crypt(hexhash):
-    return base64.b64encode(base64.b16decode(hexhash,casefold=True)).translate(string.maketrans(std_base64chars,my_base64chars))
+    return b64encode(b16decode(hexhash, casefold=True)).translate(maketrans(std_base64chars, my_base64chars))
 
 def crypt2hex(hexhash):
-    return base64.b16encode(base64.b64decode(hexhash.translate(string.maketrans(my_base64chars,std_base64chars))))
+    return b16encode(b64decode(hexhash.translate(maketrans(my_base64chars, std_base64chars))))
 
 if __name__ == "__main__":
     import sys
